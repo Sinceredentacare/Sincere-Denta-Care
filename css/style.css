@@ -2929,3 +2929,107 @@ body:not(.dark-mode) .social-icon-link:hover {
   border-color: transparent;
   color: #fff;
 }
+
+/* ============================================================
+   MOBILE NAVIGATION
+   ============================================================ */
+@media (max-width: 992px) {
+  /* Show hamburger */
+  .hamburger {
+    display: flex !important;
+  }
+
+  /* Hide and style nav-links for mobile */
+  .nav-links {
+    position: fixed;
+    top: 70px; /* Below navbar */
+    left: -100%; /* Hidden off-screen by default */
+    width: 100%;
+    height: calc(100vh - 70px);
+    background: var(--white);
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 2rem 1.5rem;
+    gap: 1.5rem;
+    box-shadow: var(--shadow-md);
+    transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow-y: auto;
+    z-index: 999;
+  }
+
+  .nav-links.open {
+    left: 0;
+  }
+
+  .nav-link {
+    font-size: 1.2rem;
+    padding: 0;
+    width: 100%;
+    justify-content: space-between;
+  }
+  
+  .nav-link:hover,
+  .nav-link.active {
+    background: transparent;
+    color: var(--teal-600);
+  }
+
+  .nav-cta {
+    width: 100%;
+    text-align: center;
+    margin-left: 0;
+    margin-top: 1rem;
+    padding: 1rem;
+    justify-content: center;
+  }
+
+  .dropdown {
+    width: 100%;
+  }
+
+  .dropdown-menu {
+    position: static;
+    box-shadow: none;
+    border: none;
+    border-left: 2px solid var(--teal-200);
+    border-radius: 0;
+    padding: 0.5rem 0 0.5rem 1rem;
+    margin-top: 0.5rem;
+    display: none;
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    min-width: 100%;
+  }
+
+  /* Support dropdown opening on mobile */
+  .nav-links.open .dropdown.active .dropdown-menu,
+  .dropdown:hover .dropdown-menu,
+  .dropdown:focus-within .dropdown-menu {
+    display: block;
+    animation: fadeDown 0.3s ease forwards;
+  }
+
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Dark mode overrides for mobile menu */
+  body.dark-mode .nav-links {
+    background: var(--grey-900);
+  }
+  
+  body.dark-mode .dropdown-menu {
+    background: transparent;
+    border-left-color: var(--teal-700);
+  }
+
+  /* Center the dark mode toggle on mobile */
+  .nav-links li:last-child {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    margin-top: 1rem;
+  }
+}
