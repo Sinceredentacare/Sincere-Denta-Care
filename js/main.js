@@ -196,24 +196,54 @@ const submitBtn = document.getElementById('submitFormBtn');
 if (form) {
   form.addEventListener('submit', (e) => {
     e.preventDefault();
+
+    // Get form values
+    const fname = document.getElementById('fname')?.value.trim() || '';
+    const lname = document.getElementById('lname')?.value.trim() || '';
+    const email = document.getElementById('email')?.value.trim() || '';
+    const phone = document.getElementById('phone')?.value.trim() || '';
+    const service = document.getElementById('service')?.value || 'Not specified';
+    const message = document.getElementById('message')?.value.trim() || '';
+
+    // Check if mandatory fields (name) are filled to avoid empty messages (basic validation)
+    if (!fname || !lname) {
+      alert("Please fill in your first and last name.");
+      return;
+    }
+
     // Visual feedback
     if (submitBtn) {
-      submitBtn.textContent = 'Sending...';
+      submitBtn.textContent = 'Redirecting to WhatsApp...';
       submitBtn.disabled = true;
       submitBtn.style.opacity = '0.75';
     }
-    // Simulate send (no backend)
+
+    // Build WhatsApp message text
+    const waNumber = '916238881511';
+    let text = `*New Website Enquiry*%0A%0A`;
+    text += `*Name:* ${fname} ${lname}%0A`;
+    if (email) text += `*Email:* ${email}%0A`;
+    if (phone) text += `*Phone:* ${phone}%0A`;
+    text += `*Service Interested:* ${service}%0A`;
+    if (message) text += `*Message:* ${message}`;
+
+    // Open WhatsApp URL
+    const waUrl = `https://wa.me/${waNumber}?text=${text}`;
+    window.open(waUrl, '_blank');
+
+    // Reset form and button after a short delay
     setTimeout(() => {
-      if (formSuccess) {
-        formSuccess.classList.add('show');
-        form.reset();
-      }
+      form.reset();
       if (submitBtn) {
-        submitBtn.textContent = 'Message Sent ✓';
-        submitBtn.style.background = 'linear-gradient(135deg, #16a34a, #15803d)';
+        submitBtn.innerHTML = `Send via WhatsApp <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 2L11 13M22 2l-7 18-4-7-7-4 18-7z"/></svg>`;
+        submitBtn.disabled = false;
         submitBtn.style.opacity = '1';
       }
-    }, 1200);
+      if (formSuccess) {
+        formSuccess.classList.add('show');
+        formSuccess.textContent = "✅ Redirected to WhatsApp!";
+      }
+    }, 1500);
   });
 }
 
